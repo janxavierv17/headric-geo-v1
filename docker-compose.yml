@@ -1,0 +1,53 @@
+services:
+    backend:
+        build:
+            context: .
+            args:
+                - DEV=true
+        ports:
+            - 8000:8000
+        volumes:
+            - ./backend:/backend
+            - dev-static-data:/vol/web
+        command: >
+            sh -c "
+                   python manage.py migrate &&
+                   python manage.py runserver 0.0.0.0:8000"
+        environment:
+            - DB_HOST=gis
+            - DB_NAME=gis
+            - DB_USER=gis
+            - DB_PASSWORD=password
+        depends_on:
+            - postgis-db
+
+    frontend:
+        build:
+            context: ./frontend
+            dockerfile: Dockerfile
+        ports:
+            - 3000:3000
+        volumes:
+            - ./frontend:/frontend
+            - /app_node_modules
+            - /app/.next
+        environment:
+            - NEXT_PUBLIC_API_URL=http://localhost:8000
+        depends_on:
+            - backend
+
+    postgis-db:
+        image: postgis/postgis
+        restart: always
+        ports:
+            - 5432:5432
+        volumes:
+            - dev-db-data:/var/lib/postgresql/data
+        environment:
+            - POSTGRES_DB=gis
+            - POSTGRES_USER=gis
+            - POSTGRES_PASSWORD=password
+
+volumes:
+    dev-db-data:
+    dev-static-data:
