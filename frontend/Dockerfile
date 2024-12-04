@@ -20,4 +20,6 @@ COPY . .
 EXPOSE 3000
 
 # Start the application in development mode
-CMD ["npm", "run", "dev"]
+# This ensures the container stays alive as long as tail -f /dev/null is running, 
+# even if the npm run dev process finishes or is killed.
+CMD ["sh", "-c", "npm run dev && tail -f /dev/null"]
