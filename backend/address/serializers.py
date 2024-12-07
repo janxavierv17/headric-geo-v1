@@ -1,11 +1,12 @@
-from rest_framework import serializers
+from rest_framework_gis.serializers import GeoFeatureModelSerializer
 from core.models import Address
 
 
-class AddressSerializer(serializers.ModelSerializer):
+class AddressSerializer(GeoFeatureModelSerializer):
     class Meta:
         model = Address
-        fields = ["id", "title", "description", "longitude", "latitude"]
+        geo_field = "geom"
+        fields = "__all__"
         read_only_fields = ["id"]
 
     def create(self, validated_data):

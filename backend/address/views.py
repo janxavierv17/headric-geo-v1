@@ -6,6 +6,3 @@ from address import serializers
 class AddressViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.AddressSerializer
     queryset = Address.objects.all()
-
-    def get_queryset(self):
-        return self.queryset
