@@ -11,7 +11,7 @@ class Address(models.Model):
     description = models.TextField(_("Description"))
     longitude = models.FloatField(_("Longitude"))
     latitude = models.FloatField(_("Latitude"))
-    geom = models.PointField(srid=4326)
+    geom = models.PointField(srid=4326, null=True, blank=True)
 
     def __str__(self):
         return self.name

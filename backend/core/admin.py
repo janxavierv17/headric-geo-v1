@@ -1,5 +1,16 @@
 from django.contrib import admin
+from django.contrib.gis.geos import Point
 from core import models
 
-# Register your models here.
-admin.site.register(models.Address)
+
+class AddressAdmin(admin.ModelAdmin):
+    exclude = ("geom",)
+
+    def save_model(self, request, obj, form, change):
+        if obj.longitude is not None and obj.latitude is not None:
+            obj.geom = Point(obj.longitude, obj.latitude)
+
+        super().save_model(request, obj, form, change)
+
+
+admin.site.register(models.Address, AddressAdmin)
