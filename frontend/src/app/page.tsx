@@ -1,43 +1,35 @@
 "use client";
 
-import "mapbox-gl/dist/mapbox-gl.css";
-import "@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css";
-
-import { useEffect, useRef, useState } from "react";
-import mapboxgl from "mapbox-gl";
+import { useEffect, useRef } from "react";
+import mapboxgl, { Map as MapboxMap } from "mapbox-gl";
 import MapboxGeoCoder from "@mapbox/mapbox-gl-geocoder";
+import { useAddressesQuery } from "../../features/api/apiSlice";
 
 export default function Home() {
-	const [data, setData] = useState<GeoJSON.FeatureCollection>();
+	// const [data, setData] = useState<GeoJSON.FeatureCollection>();
 	const mapContainerRef = useRef<HTMLDivElement | null>(null);
-	const mapRef = useRef<mapboxgl.Map | undefined>(undefined);
+	const mapRef = useRef<MapboxMap | undefined>(undefined);
+
+	const { data, error, isLoading } = useAddressesQuery();
 
 	useEffect(() => {
-		async function fetchData() {
-			const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/address/`);
-			const data = await response.json();
-
-			if (data) {
-				setData(data);
-			}
-		}
-
-		fetchData();
-	}, []);
-
-	useEffect(() => {
-		if (!data) return; // Do not initialize map if there is no data
+		if (!data) return;
 
 		mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN || "";
-		const geocoder = new MapboxGeoCoder({
-			accessToken: mapboxgl.accessToken,
-			mapboxgl: mapboxgl,
-		});
+
 		const map = (mapRef.current = new mapboxgl.Map({
 			container: mapContainerRef.current || "",
 			center: [151.2093, -33.8688], // Initial center (Sydney, Australia)
 			zoom: 10, // Adjust zoom level as needed
 		}));
+
+		// map.jumpTo({ center: [-65.017, -16.457] });
+
+		const geocoder = new MapboxGeoCoder({
+			accessToken: mapboxgl.accessToken,
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
+			mapboxgl: mapboxgl as any,
+		});
 
 		// Add GeoJSON data to the map
 		map.on("load", () => {
@@ -60,20 +52,24 @@ export default function Home() {
 
 			// Add popups and markers for each feature in the GeoJSON
 			data.features.forEach((feature: GeoJSON.Feature) => {
-				const [lng, lat] = feature.geometry.coordinates;
+				if (feature.geometry.type === "Point") {
+					const [lng, lat] = feature.geometry.coordinates;
 
-				const popup = new mapboxgl.Popup({ offset: 25 }).setHTML(
-					`<h3>${feature?.properties?.name}</h3><p>${feature?.properties?.description}</p>`
-				);
+					const popup = new mapboxgl.Popup({ offset: 25 }).setHTML(
+						`<h3>${feature?.properties?.name}</h3><p>${feature?.properties?.description}</p>`
+					);
 
-				new mapboxgl.Marker().setLngLat([lng, lat]).setPopup(popup).addTo(map);
+					new mapboxgl.Marker().setLngLat([lng, lat]).setPopup(popup).addTo(map);
+				}
 			});
 
 			// Adjust the map to fit the bounds of the GeoJSON data
 			const bounds = new mapboxgl.LngLatBounds();
 			data.features.forEach((feature: GeoJSON.Feature) => {
-				const [lng, lat] = feature.geometry.coordinates;
-				bounds.extend([lng, lat]);
+				if (feature.geometry.type === "Point") {
+					const [lng, lat] = feature.geometry.coordinates; // Safe now
+					bounds.extend([lng, lat]);
+				}
 			});
 			map.fitBounds(bounds, { padding: 50 });
 
