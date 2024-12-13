@@ -4,7 +4,7 @@ export const apiSlice = createApi({
 	reducerPath: "addresses",
 	baseQuery: fetchBaseQuery({ baseUrl: process.env.NEXT_PUBLIC_API_URL }),
 	endpoints: (builder) => ({
-		addresses: builder.query<void, void>({
+		addresses: builder.query<GeoJSON.FeatureCollection, void>({
 			query: () => "/address/",
 		}),
 	}),

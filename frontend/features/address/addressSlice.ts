@@ -4,10 +4,10 @@ export const addressSlice = createSlice({
 	name: "address",
 	initialState: [{}],
 	reducers: {
-		getAllAddresses: (state) => state,
+		getSearchedAddresses: (state) => state,
 	},
 });
 
-export const { getAllAddresses } = addressSlice.actions;
+export const { getSearchedAddresses } = addressSlice.actions;
 
 export default addressSlice.reducer;

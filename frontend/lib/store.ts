@@ -1,9 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { apiSlice } from "../features/api/apiSlice";
+import addressReducer from "../features/address/addressSlice";
 
 export const makeStore = () => {
 	return configureStore({
 		reducer: {
+			address: addressReducer,
 			[apiSlice.reducerPath]: apiSlice.reducer,
 		},
 		middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(apiSlice.middleware),
