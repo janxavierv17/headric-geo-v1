@@ -14,3 +14,7 @@ class AddressAdmin(admin.ModelAdmin):
 
 
 admin.site.register(models.Address, AddressAdmin)
+admin.site.register(models.Customer)
+admin.site.register(models.Unit)
+admin.site.register(models.RentalApplication)
+admin.site.register(models.MaintenanceTask)
