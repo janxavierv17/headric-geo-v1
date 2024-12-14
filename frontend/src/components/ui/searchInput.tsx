@@ -1,9 +1,11 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { searchAndSuggestions } from "../../../lib/mapbox/actions";
+import { retrieveGeoCode, searchAndSuggestions } from "../../../lib/mapbox/actions";
 import { Input } from "./input";
-import { MapboxSuggestions } from "../../../lib/mapbox/types";
+import { Mapbox_id, Mapbox_name, MapboxSuggestions } from "../../../lib/mapbox/types";
+import { useAppDispatch } from "../../../lib/hooks";
+import { feature } from "../../../features/address/addressSlice";
 
 export const SearchInput = ({ proximity }: { proximity: [number, number] | undefined }) => {
 	const [searchText, setSearchText] = useState("");
@@ -14,6 +16,8 @@ export const SearchInput = ({ proximity }: { proximity: [number, number] | undef
 	const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 	const inputRef = useRef<HTMLInputElement>(null);
 	const suggestionsRef = useRef<HTMLUListElement>(null);
+
+	const dispatch = useAppDispatch();
 
 	useEffect(() => {
 		if (timeoutRef.current) clearTimeout(timeoutRef.current);
@@ -72,10 +76,11 @@ export const SearchInput = ({ proximity }: { proximity: [number, number] | undef
 		}
 	};
 
-	const handleSuggestionClick = (name: string) => {
+	const handleSuggestionClick = async (name: Mapbox_name, mapbox_id: Mapbox_id) => {
 		setSearchText(name);
 		setIsDropdownOpen(false);
 		inputRef.current?.focus();
+		dispatch(feature(await retrieveGeoCode(mapbox_id)));
 	};
 
 	const handleOnInput = () => {
@@ -131,7 +136,7 @@ export const SearchInput = ({ proximity }: { proximity: [number, number] | undef
 							className={`px-4 py-2 cursor-pointer ${index === highlightedIndex ? "bg-gray-200" : ""}`}
 							role="option"
 							aria-selected={index === highlightedIndex}
-							onClick={() => handleSuggestionClick(suggestion.name)}
+							onClick={() => handleSuggestionClick(suggestion.name, suggestion.mapbox_id)}
 						>
 							{suggestion.name}
 						</li>

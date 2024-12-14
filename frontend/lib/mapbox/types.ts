@@ -28,3 +28,7 @@ export type MapboxSuggestions = {
 		distance: number;
 	}>;
 };
+
+export type MapboxSuggestion = MapboxSuggestions["suggestions"][number];
+export type Mapbox_id = MapboxSuggestion["mapbox_id"];
+export type Mapbox_name = MapboxSuggestion["name"];
