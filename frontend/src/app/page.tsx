@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState } from "react";
 import mapboxgl, { Map as MapboxMap } from "mapbox-gl";
-import "mapbox-gl/dist/mapbox-gl.css";
 import { useAddressesQuery } from "../../features/api/apiSlice";
 import { geoCoder } from "../../lib/mapbox/geoCoder";
 import { SearchInput } from "@/components/ui/searchInput";
