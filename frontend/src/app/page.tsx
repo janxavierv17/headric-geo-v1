@@ -3,15 +3,17 @@
 import { useEffect, useRef, useState } from "react";
 import mapboxgl, { Map as MapboxMap } from "mapbox-gl";
 import { useAddressesQuery } from "../../features/api/apiSlice";
-import { geoCoder } from "../../lib/mapbox/geoCoder";
 import { SearchInput } from "@/components/ui/searchInput";
+import { useAppDispatch } from "../../lib/hooks";
+import { currentProximity } from "../../features/address/addressSlice";
 
 export default function Home() {
 	mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN || "";
-	const [proximity, setProximity] = useState<[number, number]>();
+	const [proximity, setProximity] = useState<[number, number] | null>(null);
 	const mapContainerRef = useRef<HTMLDivElement | null>(null);
 	const mapRef = useRef<MapboxMap | null>(null);
 	const { data } = useAddressesQuery();
+	const dispatch = useAppDispatch();
 
 	// Initialize map
 	useEffect(() => {
@@ -22,18 +24,19 @@ export default function Home() {
 				center: [151.2093, -33.8688],
 				zoom: 10,
 			});
-
 			// Update proximity when map moves
 			const updateProximity = () => {
 				const visibleBounds = mapRef.current?.getBounds();
 				if (visibleBounds) {
-					setProximity([
+					const latLng: [number, number] = [
 						(visibleBounds.getEast() + visibleBounds.getWest()) / 2,
 						(visibleBounds.getNorth() + visibleBounds.getSouth()) / 2,
-					]);
+					];
+
+					setProximity(latLng);
+					dispatch(currentProximity(latLng));
 				}
 			};
-
 			mapRef.current.on("moveend", updateProximity);
 			mapRef.current.on("load", updateProximity);
 		}
@@ -51,7 +54,6 @@ export default function Home() {
 		const map = mapRef.current;
 		if (!data || !map) return;
 
-		const geocoder = geoCoder();
 		const bounds = new mapboxgl.LngLatBounds();
 
 		const initializeMapData = () => {
@@ -89,9 +91,6 @@ export default function Home() {
 				if (!bounds.isEmpty()) {
 					map.fitBounds(bounds, { padding: 50 });
 				}
-
-				// Add geocoder control
-				map.addControl(geocoder);
 			}
 		};
 
@@ -100,33 +99,17 @@ export default function Home() {
 		} else {
 			map.on("load", initializeMapData);
 		}
-
-		// Listen for the result event from the geocoder
-		geocoder.on("result", (event) => {
-			const result = event.result;
-			new mapboxgl.Marker({ color: "#FF0000" })
-				.setLngLat(result.center)
-				.setPopup(new mapboxgl.Popup().setHTML(`<h3>${result.place_name}</h3>`))
-				.addTo(map);
-		});
-
-		return () => {
-			geocoder.off("result", (event) => {
-				console.log(event.result);
-			});
-		};
 	}, [data]);
 
 	return (
-		<>
-			<div
-				ref={mapContainerRef}
-				className="map-container relative h-screen w-screen z-0"
-				style={{ height: "100vh" }} // Explicit height
-			/>
+		<div
+			ref={mapContainerRef}
+			className="map-container relative h-screen w-screen z-0"
+			style={{ height: "100vh", border: "1px solid red" }} // Explicit height
+		>
 			<div className="absolute z-10 top-3 left-3 w-1/5">
 				<SearchInput proximity={proximity} />
 			</div>
-		</>
+		</div>
 	);
 }

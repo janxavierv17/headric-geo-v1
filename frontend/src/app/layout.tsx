@@ -6,6 +6,7 @@ import "mapbox-gl/dist/mapbox-gl.css";
 import "@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css";
 
 import StoreProvider from "@/components/StoreProvider";
+import { NavBar } from "@/components/ui/navBar";
 
 const geistSans = localFont({
 	src: "./fonts/GeistVF.woff",
@@ -31,7 +32,10 @@ export default function RootLayout({
 	return (
 		<html lang="en">
 			<body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-				<StoreProvider>{children}</StoreProvider>
+				<StoreProvider>
+					<NavBar />
+					{children}
+				</StoreProvider>
 			</body>
 		</html>
 	);

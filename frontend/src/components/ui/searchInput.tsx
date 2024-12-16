@@ -7,7 +7,7 @@ import { Mapbox_id, Mapbox_name, MapboxSuggestions } from "../../../lib/mapbox/t
 import { useAppDispatch } from "../../../lib/hooks";
 import { feature } from "../../../features/address/addressSlice";
 
-export const SearchInput = ({ proximity }: { proximity: [number, number] | undefined }) => {
+export const SearchInput = ({ proximity }: { proximity: [number, number] | null }) => {
 	const [searchText, setSearchText] = useState("");
 	const [debouncedSearchText, setDebouncedSearchText] = useState("");
 	const [searchTextSuggestions, setSearchTextSuggestions] = useState<MapboxSuggestions>();
@@ -138,7 +138,8 @@ export const SearchInput = ({ proximity }: { proximity: [number, number] | undef
 							aria-selected={index === highlightedIndex}
 							onClick={() => handleSuggestionClick(suggestion.name, suggestion.mapbox_id)}
 						>
-							{suggestion.name}
+							<p className="text-base">{suggestion.name}</p>
+							<p className="text-sm">{suggestion.full_address}</p>
 						</li>
 					))}
 				</ul>
