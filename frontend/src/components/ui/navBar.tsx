@@ -5,8 +5,8 @@ import { Button } from "./button";
 import { HomeIcon, UserIcon } from "@heroicons/react/24/outline";
 import { usePathname } from "next/navigation";
 
-const links = { home: "/", apartment: "/apartment", login: "/login" } as const;
-type allowedUrls = (typeof links)[keyof typeof links];
+export const links = { home: "/", apartment: "/apartment", login: "/login" } as const;
+export type allowedUrls = (typeof links)[keyof typeof links];
 
 export const NavBar = () => {
 	const pathname = usePathname();

@@ -5,8 +5,7 @@ export default function Apartment() {
 
 	return (
 		<>
-			<h1>Add an address</h1>
-			<SearchInput proximity={currentProximity} />
+			<h1 className="text-lg font-bold">Add an address</h1>
 		</>
 	);
 }

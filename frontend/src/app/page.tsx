@@ -1,11 +1,14 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import mapboxgl, { Map as MapboxMap } from "mapbox-gl";
+import mapboxgl, { Map as MapboxMap, Marker } from "mapbox-gl";
 import { useAddressesQuery } from "../../features/api/apiSlice";
 import { SearchInput } from "@/components/ui/searchInput";
-import { useAppDispatch } from "../../lib/hooks";
+import { useAppDispatch, useAppSelector } from "../../lib/hooks";
 import { currentProximity } from "../../features/address/addressSlice";
+import { v4 as uuIdv4 } from "uuid";
+import { useRouter } from "next/navigation";
+import { links } from "@/components/ui/navBar";
 
 export default function Home() {
 	mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN || "";
@@ -14,6 +17,67 @@ export default function Home() {
 	const mapRef = useRef<MapboxMap | null>(null);
 	const { data } = useAddressesQuery();
 	const dispatch = useAppDispatch();
+	const markersRef = useRef<Map<string, Marker>>(new Map());
+	const coord = useAppSelector((state) => state.address.feature?.geometry.coordinates);
+	const router = useRouter();
+
+	useEffect(() => {
+		if (coord && mapRef.current) {
+			mapRef.current.flyTo({
+				center: coord,
+			});
+
+			const markerId = `marker-${uuIdv4()}`;
+			const popupContent = `
+					  <div class="p-3">
+						<div class="flex gap-2">
+							<button
+								id="add-${markerId}"
+								class="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600 transition-colors"
+								${markersRef.current.has(markerId) ? 'style="display:none"' : ""}
+							>
+								Add Marker
+							</button>
+							<button
+								id="remove-${markerId}"
+								class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 transition-colors"
+								${markersRef.current.has(`${markerId}`) ? 'style="display:none"' : ""}
+							>
+								Remove Marker
+							</button>
+						</div>
+					  </div>
+					`;
+
+			const popup = new mapboxgl.Popup({
+				offset: 25,
+				closeButton: true,
+				closeOnClick: false,
+			}).setHTML(popupContent);
+
+			const marker = new mapboxgl.Marker().setLngLat(coord).setPopup(popup).addTo(mapRef.current);
+			markersRef.current.set(markerId, marker);
+
+			popup.on("open", () => {
+				const addButton = document.getElementById(`add-${markerId}`);
+				const removeButton = document.getElementById(`remove-${markerId}`);
+
+				addButton?.addEventListener("click", () => {
+					router.push(links.apartment);
+				});
+
+				removeButton?.addEventListener("click", () => {
+					const marker = markersRef.current.get(markerId);
+					if (marker) {
+						marker.remove();
+						markersRef.current.delete(markerId);
+						removeButton.style.display = "none";
+						addButton!.style.display = "block";
+					}
+				});
+			});
+		}
+	}, [coord]);
 
 	// Initialize map
 	useEffect(() => {
