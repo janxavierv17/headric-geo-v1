@@ -27,7 +27,7 @@ export const NavBar = () => {
 						>
 							<Link href="/apartment" className="flex items-center gap-2">
 								<HomeIcon />
-								Add Apartment
+								Add a unit
 							</Link>
 						</Button>
 					</li>
