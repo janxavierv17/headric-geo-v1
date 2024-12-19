@@ -48,8 +48,7 @@ THIRD_PARTY_APPS = ["rest_framework", "rest_framework_gis", "corsheaders"]
 PROJECT_APPS = [
     "core.apps.CoreConfig",
     "address.apps.AddressConfig",
-    "hospitals.apps.HospitalsConfig",
-    "boundaries.apps.BoundariesConfig",
+    "unit.apps.UnitConfig",
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + PROJECT_APPS

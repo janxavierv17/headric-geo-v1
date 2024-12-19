@@ -12,6 +12,8 @@ class Address(models.Model):
     longitude = models.FloatField(_("Longitude"))
     latitude = models.FloatField(_("Latitude"))
     geom = models.PointField(srid=4326, null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.name
@@ -34,6 +36,19 @@ class Customer(models.Model):
         blank=True,
         related_name="customers",
     )
+    date_of_birth = models.DateField(_("Date of Birth"), null=True, blank=True)
+    employment_status = models.CharField(
+        _("Employment Status"), max_length=50, blank=True
+    )
+    annual_income = models.DecimalField(
+        _("Annual Income"),
+        max_digits=12,
+        decimal_places=2,
+        null=True,
+        blank=True,
+    )
+    created_at = models.DateTimeField(auto_now_add=True, null=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
@@ -67,6 +82,28 @@ class Unit(models.Model):
     has_parking = models.BooleanField(_("Has Parking"), default=False)
     pet_friendly = models.BooleanField(_("Pet Friendly"), default=False)
     listed_on = models.DateField(_("Listed On"), auto_now_add=True)
+    lease_term = models.IntegerField(_("Lease Term (months)"), default=12)
+    security_deposit = models.DecimalField(
+        _("Security Deposit"), max_digits=10, decimal_places=2, null=True
+    )
+    utilities_included = models.BooleanField(
+        _("Utilities Included"), default=False
+    )
+    furnished = models.BooleanField(_("Furnished"), default=False)
+    available_from = models.DateField(_("Available From"), null=True)
+    unit_type = models.CharField(
+        _("Unit Type"),
+        max_length=50,
+        choices=[
+            ("apartment", "Apartment"),
+            ("house", "House"),
+            ("studio", "Studio"),
+            ("townhouse", "Townhouse"),
+        ],
+        default="Apartment",
+    )
+    created_at = models.DateTimeField(auto_now_add=True, null=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return f"Unit {self.unit_number} - {self.address.name}"
@@ -90,6 +127,28 @@ class RentalApplication(models.Model):
     )
     applied_on = models.DateTimeField(_("Applied On"), auto_now_add=True)
     notes = models.TextField(_("Notes"), blank=True)
+    desired_move_in_date = models.DateField(
+        _("Desired Move-in Date"), null=True
+    )
+    lease_term_length = models.IntegerField(
+        _("Desired Lease Term (months)"), null=True
+    )
+    number_of_occupants = models.IntegerField(
+        _("Number of Occupants"), default=1
+    )
+    has_pets = models.BooleanField(_("Has Pets"), default=False)
+    pet_details = models.TextField(_("Pet Details"), blank=True)
+    employment_verification = models.FileField(
+        _("Employment Verification"),
+        upload_to="employment_docs/",
+        null=True,
+        blank=True,
+    )
+    credit_score = models.IntegerField(
+        _("Credit Score"), null=True, blank=True
+    )
+    created_at = models.DateTimeField(auto_now_add=True, null=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return f"Application for {self.unit} by {self.customer}"
