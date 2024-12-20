@@ -15,12 +15,9 @@ services:
             dockerfile: Dockerfile
             args:
                 - DEV=true
-        # ports:
-        #     - 8000:8000
         volumes:
             - ./backend:/backend
             - dev-static-data:/vol/web
-        # command: tail -f /dev/null
         command: >
             sh -c "python manage.py wait_for_db &&
                    python manage.py migrate &&
@@ -44,7 +41,8 @@ services:
             - /app_node_modules
             - /app/.next
         environment:
-            - NEXT_PUBLIC_API_URL=http://localhost:8080/api/v1
+            - NEXT_PUBLIC_API_URL=http://nginx/api/v1
+            - PUBLIC_API_URL=http://nginx/api/v1
         depends_on:
             - backend
 
