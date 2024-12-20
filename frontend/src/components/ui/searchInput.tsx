@@ -103,6 +103,7 @@ export const SearchInput = ({ proximity }: { proximity: [number, number] | null 
 			</label>
 			<Input
 				id="search-input"
+				name="search-input"
 				type="search"
 				placeholder="Search"
 				className="w-full bg-white"
