@@ -7,7 +7,13 @@ import { Mapbox_id, Mapbox_name, MapboxSuggestions } from "../../../lib/mapbox/t
 import { useAppDispatch } from "../../../lib/hooks";
 import { feature } from "../../../features/address/addressSlice";
 
-export const SearchInput = ({ proximity }: { proximity: [number, number] | null }) => {
+export const SearchInput = ({
+	proximity,
+	onChange,
+}: {
+	proximity: [number, number] | null;
+	onChange: (value: string) => void;
+}) => {
 	const [searchText, setSearchText] = useState("");
 	const [debouncedSearchText, setDebouncedSearchText] = useState("");
 	const [searchTextSuggestions, setSearchTextSuggestions] = useState<MapboxSuggestions>();
@@ -46,6 +52,7 @@ export const SearchInput = ({ proximity }: { proximity: [number, number] | null 
 		setSearchText(event.target.value);
 		setHighlightedIndex(-1);
 		setIsDropdownOpen(true);
+		onChange(event.target.value);
 	};
 
 	const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
