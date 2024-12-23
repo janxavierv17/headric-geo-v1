@@ -46,22 +46,30 @@ export default function Apartment() {
 
 	const onSubmit = (data: UnitFormData) => {
 		const formData = new FormData();
-		formData.append("search_input", data["search_input"]);
-		formData.append("unit_number", data["unit_number"]);
-		formData.append("apartment_name", data["apartment_name"]);
-		formData.append("unit_description", data["unit_description"]);
-		formData.append("cost_per_month", data["cost_per_month"]);
-		formData.append("number_of_bedrooms", data["number_of_bedrooms"]);
-		formData.append("number_of_bathrooms", data["number_of_bathrooms"]);
-		formData.append("square_footage", data["square_footage"]);
-		formData.append("lease_term", data["lease_term"]);
-		formData.append("security_deposit", data["security_deposit"]);
-		formData.append("is_available", data["is_available"]);
-		formData.append("available_from", data["available_from"]);
-		formData.append("has_parking", data["has_parking"]);
-		formData.append("pet_friendly", data["pet_friendly"]);
-		formData.append("furnished", data["furnished"]);
-		formData.append("unit_type", data["unit_type"]);
+
+		const safeAppend = (name: string, value: string | Blob | number | boolean | null | undefined) => {
+			if (value !== undefined && value !== null) {
+				formData.append(name, value.toString());
+			}
+		};
+
+		safeAppend("search_input", data["search_input"]);
+		safeAppend("unit_number", data["unit_number"]);
+		safeAppend("apartment_name", data["apartment_name"]);
+		safeAppend("unit_description", data["unit_description"]);
+		safeAppend("cost_per_month", data["cost_per_month"]);
+		safeAppend("number_of_bedrooms", data["number_of_bedrooms"]);
+		safeAppend("number_of_bathrooms", data["number_of_bathrooms"]);
+		safeAppend("square_footage", data["square_footage"]);
+		safeAppend("lease_term", data["lease_term"]);
+		safeAppend("security_deposit", data["security_deposit"]);
+		safeAppend("is_available", data["is_available"]);
+		safeAppend("available_from", data["available_from"]);
+		safeAppend("has_parking", data["has_parking"]);
+		safeAppend("pet_friendly", data["pet_friendly"]);
+		safeAppend("furnished", data["furnished"]);
+		safeAppend("unit_type", data["unit_type"]);
+
 		addUnitWithPayload(formData);
 	};
 
