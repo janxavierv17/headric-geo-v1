@@ -3,16 +3,17 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/components/ui/input";
 import { SearchInput } from "@/components/ui/searchInput";
-import { addUnit } from "./actions";
 import { Button } from "@/components/ui/button";
-import { useAppSelector } from "../../../../lib/hooks";
 import { useForm } from "react-hook-form";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { ComboBox } from "@/components/ui/combobox";
 import { Checkbox } from "@/components/ui/checkbox";
-import { UnitFormData, unitSchema } from "./formSchema";
+import { addUnit } from "../../../lib/actions";
+import { UnitFormData, unitSchema } from "../../../lib/formSchema";
+import { useAppSelector } from "../../../lib/hooks";
+import { UnitType } from "./unitType";
 
-export default function Apartment() {
+export const AddUnit = () => {
 	const form = useForm<UnitFormData>({
 		resolver: zodResolver(unitSchema),
 		defaultValues: {
@@ -74,11 +75,28 @@ export default function Apartment() {
 	};
 
 	return (
-		<>
-			<h1 className="text_lg font_bold">Unit details</h1>
+		<div className="w-[40vw]">
 			<Form {...form}>
 				<form onSubmit={form.handleSubmit(onSubmit)}>
 					<FormField
+						control={form.control}
+						name="unit_type"
+						render={({ field }) => {
+							return (
+								<FormItem>
+									<FormLabel htmlFor="unit_type" className="text-xl">
+										What kind of unit do you have?
+									</FormLabel>
+									<FormControl>
+										<UnitType onChange={field.onChange} />
+									</FormControl>
+								</FormItem>
+							);
+						}}
+					/>
+					<Button type="submit">Create entered unit</Button>
+
+					{/* <FormField
 						control={form.control}
 						name="search_input"
 						render={({ field }) => (
@@ -261,20 +279,6 @@ export default function Apartment() {
 
 					<FormField
 						control={form.control}
-						name="is_available"
-						render={({ field }) => (
-							<FormItem className="flex flex_row items_start space_x_3 space_y_0">
-								<FormControl>
-									<Checkbox checked={field.value} onCheckedChange={field.onChange} />
-								</FormControl>
-								<FormLabel>Is the unit available?</FormLabel>
-								<FormMessage />
-							</FormItem>
-						)}
-					/>
-
-					<FormField
-						control={form.control}
 						name="available_from"
 						render={({ field }) => (
 							<FormItem>
@@ -295,7 +299,19 @@ export default function Apartment() {
 							</FormItem>
 						)}
 					/>
-
+					<FormField
+						control={form.control}
+						name="is_available"
+						render={({ field }) => (
+							<FormItem className="flex flex_row items_start space_x_3 space_y_0">
+								<FormControl>
+									<Checkbox checked={field.value} onCheckedChange={field.onChange} />
+								</FormControl>
+								<FormLabel>Is the unit available?</FormLabel>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
 					<FormField
 						control={form.control}
 						name="has_parking"
@@ -336,22 +352,9 @@ export default function Apartment() {
 								<FormMessage />
 							</FormItem>
 						)}
-					/>
-					<FormField
-						control={form.control}
-						name="unit_type"
-						render={() => (
-							<FormItem>
-								<FormLabel>Unit type</FormLabel>
-								<FormControl>
-									<ComboBox />
-								</FormControl>
-							</FormItem>
-						)}
-					/>
-					<Button type="submit">Create entered unit</Button>
+					/> */}
 				</form>
 			</Form>
-		</>
+		</div>
 	);
-}
+};
