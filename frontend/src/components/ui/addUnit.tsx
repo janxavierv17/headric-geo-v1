@@ -3,22 +3,36 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/components/ui/input";
 import { SearchInput } from "@/components/ui/searchInput";
-import { addUnit } from "./actions";
 import { Button } from "@/components/ui/button";
-import { useAppDispatch, useAppSelector } from "../../../../lib/hooks";
 import { useForm } from "react-hook-form";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { ComboBox } from "@/components/ui/combobox";
 import { Checkbox } from "@/components/ui/checkbox";
-import { UnitFormData, unitSchema } from "./formSchema";
-import { setUnitDetails } from "../../../../features/unit/unitSlice";
-import { UnitType } from "@/components/ui/unitType";
+import { addUnit } from "../../../lib/actions";
+import { UnitFormData, unitSchema } from "../../../lib/formSchema";
+import { useAppSelector } from "../../../lib/hooks";
+import { UnitType } from "./unitType";
 
-export default function Apartment() {
-	const dispatch = useAppDispatch();
+export const AddUnit = () => {
 	const form = useForm<UnitFormData>({
 		resolver: zodResolver(unitSchema),
 		defaultValues: {
 			unit_type: "apartment",
+			search_input: "",
+			unit_number: "",
+			apartment_name: "",
+			unit_description: "",
+			cost_per_month: 0,
+			number_of_bedrooms: 1,
+			number_of_bathrooms: 1,
+			square_footage: 0,
+			lease_term: 12,
+			security_deposit: 0,
+			is_available: true,
+			available_from: "",
+			has_parking: false,
+			pet_friendly: false,
+			furnished: false,
 		},
 	});
 	const currentProximity: [number, number] = [133.4170119, -26.1772288];
@@ -39,7 +53,7 @@ export default function Apartment() {
 				formData.append(name, value.toString());
 			}
 		};
-		safeAppend("unit_type", data["unit_type"]);
+
 		safeAppend("search_input", data["search_input"]);
 		safeAppend("unit_number", data["unit_number"]);
 		safeAppend("apartment_name", data["apartment_name"]);
@@ -55,8 +69,8 @@ export default function Apartment() {
 		safeAppend("has_parking", data["has_parking"]);
 		safeAppend("pet_friendly", data["pet_friendly"]);
 		safeAppend("furnished", data["furnished"]);
+		safeAppend("unit_type", data["unit_type"]);
 
-		dispatch(setUnitDetails(data));
 		addUnitWithPayload(formData);
 	};
 
@@ -68,7 +82,6 @@ export default function Apartment() {
 						control={form.control}
 						name="unit_type"
 						render={({ field }) => {
-							console.log("field =>", { field });
 							return (
 								<FormItem>
 									<FormLabel htmlFor="unit_type" className="text-xl">
@@ -83,7 +96,7 @@ export default function Apartment() {
 					/>
 					<Button type="submit">Create entered unit</Button>
 
-					<FormField
+					{/* <FormField
 						control={form.control}
 						name="search_input"
 						render={({ field }) => (
@@ -339,9 +352,9 @@ export default function Apartment() {
 								<FormMessage />
 							</FormItem>
 						)}
-					/>
+					/> */}
 				</form>
 			</Form>
 		</div>
 	);
-}
+};
