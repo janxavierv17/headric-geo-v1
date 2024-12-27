@@ -166,11 +166,7 @@ export default function Home() {
 	}, [data]);
 
 	return (
-		<div
-			ref={mapContainerRef}
-			className="map-container relative h-screen w-screen z-0"
-			style={{ height: "100vh", border: "1px solid red" }} // Explicit height
-		>
+		<div ref={mapContainerRef} className="map-container relative h-screen w-screen z-0">
 			<div className="absolute z-10 top-3 left-3 w-1/5">
 				<SearchInput proximity={proximity} />
 			</div>
