@@ -2,10 +2,10 @@
 
 import Link from "next/link";
 import { Button } from "./button";
-import { UserIcon } from "@heroicons/react/24/outline";
+import { HomeIcon, UserIcon } from "@heroicons/react/24/outline";
 import { usePathname } from "next/navigation";
 
-export const links = { home: "/", login: "/login" } as const;
+export const links = { home: "/", apartment: "/apartment", login: "/login" } as const;
 export type allowedUrls = (typeof links)[keyof typeof links];
 
 export const NavBar = () => {
@@ -19,6 +19,18 @@ export const NavBar = () => {
 					<Link href="/">APT.</Link>
 				</li>
 				<div className="flex justify-between items-center gap-3">
+					<li>
+						<Button
+							className={`hover:bg-emerald-600 ${
+								isActive("/apartment") ? "bg-emerald-700 text-white" : ""
+							} focus:outline-none focus:ring focus:ring-emerald-300`}
+						>
+							<Link href="/apartment" className="flex items-center gap-2">
+								<HomeIcon />
+								Add a unit
+							</Link>
+						</Button>
+					</li>
 					<li>
 						<Button
 							className={`hover:bg-emerald-600 ${

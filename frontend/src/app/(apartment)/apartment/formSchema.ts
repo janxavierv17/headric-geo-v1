@@ -3,7 +3,7 @@ import * as z from "zod";
 const unitTypeEnum = ["apartment", "house", "studio", "townhouse"] as const;
 
 export const unitSchema = z.object({
-	unit_number: z.string().max(50, "Unit number cannot exceed 50 characters"),
+	unit_number: z.string().nonempty("Please enter a value").max(50, "Unit number cannot exceed 50 characters"),
 	apartment_name: z.string().nonempty("Apartment name is required"),
 	search_input: z.string().nonempty("Search input is required"),
 
@@ -57,3 +57,23 @@ export const unitSchema = z.object({
 
 // Type inference
 export type UnitFormData = z.infer<typeof unitSchema>;
+
+export const defaultFormData: UnitFormData = {
+	unit_number: "",
+	apartment_name: "",
+	search_input: "",
+	is_available: true,
+	unit_description: "",
+	cost_per_month: 0,
+	number_of_bedrooms: 1,
+	number_of_bathrooms: 1,
+	square_footage: null,
+	has_parking: false,
+	pet_friendly: false,
+	lease_term: 12,
+	security_deposit: null,
+	utilities_included: false,
+	furnished: false,
+	available_from: "",
+	unit_type: "apartment",
+};
