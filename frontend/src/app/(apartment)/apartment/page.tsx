@@ -1,81 +1,349 @@
 "use client";
 
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { SearchInput } from "@/components/ui/searchInput";
 import { addUnit } from "./actions";
 import { Button } from "@/components/ui/button";
 import { useAppSelector } from "../../../../lib/hooks";
+import { useForm } from "react-hook-form";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { ComboBox } from "@/components/ui/combobox";
+import { Checkbox } from "@/components/ui/checkbox";
+import { UnitFormData, unitSchema } from "./formSchema";
 
 export default function Apartment() {
+	const form = useForm<UnitFormData>({
+		resolver: zodResolver(unitSchema),
+		defaultValues: {
+			unit_type: "apartment",
+			search_input: "",
+			unit_number: "",
+			apartment_name: "",
+			unit_description: "",
+			cost_per_month: 0,
+			number_of_bedrooms: 1,
+			number_of_bathrooms: 1,
+			square_footage: 0,
+			lease_term: 12,
+			security_deposit: 0,
+			is_available: true,
+			available_from: "",
+			has_parking: false,
+			pet_friendly: false,
+			furnished: false,
+		},
+	});
 	const currentProximity: [number, number] = [133.4170119, -26.1772288];
 	const feature = useAppSelector((state) => state.address.feature) as GeoJSON.Feature<GeoJSON.Point>;
-	const { full_address, name_preferred } = feature.properties || { full_address: "", name_preferred: "" };
+	const { full_address, name_preferred } = feature?.properties || { full_address: "", name_preferred: "" };
 
 	const addUnitWithPayload = addUnit.bind(null, {
-		longitude: feature.geometry.coordinates[0],
-		latitude: feature.geometry.coordinates[1],
+		longitude: feature?.geometry.coordinates[0],
+		latitude: feature?.geometry.coordinates[1],
 		description: `Full address: ${full_address}, Preferred name: ${name_preferred}`,
 	});
 
+	const onSubmit = (data: UnitFormData) => {
+		const formData = new FormData();
+		formData.append("search_input", data["search_input"]);
+		formData.append("unit_number", data["unit_number"]);
+		formData.append("apartment_name", data["apartment_name"]);
+		formData.append("unit_description", data["unit_description"]);
+		formData.append("cost_per_month", data["cost_per_month"]);
+		formData.append("number_of_bedrooms", data["number_of_bedrooms"]);
+		formData.append("number_of_bathrooms", data["number_of_bathrooms"]);
+		formData.append("square_footage", data["square_footage"]);
+		formData.append("lease_term", data["lease_term"]);
+		formData.append("security_deposit", data["security_deposit"]);
+		formData.append("is_available", data["is_available"]);
+		formData.append("available_from", data["available_from"]);
+		formData.append("has_parking", data["has_parking"]);
+		formData.append("pet_friendly", data["pet_friendly"]);
+		formData.append("furnished", data["furnished"]);
+		formData.append("unit_type", data["unit_type"]);
+		addUnitWithPayload(formData);
+	};
+
 	return (
 		<>
-			<h1 className="text-lg font-bold">Unit details</h1>
-			<form action={addUnitWithPayload}>
-				<Label htmlFor="search-input">Search an address to start adding a unit</Label>
-				<SearchInput proximity={currentProximity} />
+			<h1 className="text_lg font_bold">Unit details</h1>
+			<Form {...form}>
+				<form onSubmit={form.handleSubmit(onSubmit)}>
+					<FormField
+						control={form.control}
+						name="search_input"
+						render={({ field }) => (
+							<FormItem>
+								<FormLabel htmlFor="search_input">Search an address</FormLabel>
+								<FormControl>
+									<SearchInput proximity={currentProximity} onChange={field.onChange} />
+								</FormControl>
+							</FormItem>
+						)}
+					/>
 
-				<Label htmlFor="apartment-name">Does the apartment have a name?</Label>
-				<Input id="apartment-name" name="apartment-name" type="text" placeholder="Name of the apartment" />
+					<FormField
+						control={form.control}
+						name="apartment_name"
+						render={({ field }) => {
+							return (
+								<FormItem>
+									<FormLabel htmlFor="apartment_name">Does the apartment have a name?</FormLabel>
+									<FormControl>
+										<Input placeholder="Name of the apartment" {...field} />
+									</FormControl>
+									<FormMessage />
+								</FormItem>
+							);
+						}}
+					/>
 
-				<Label htmlFor="unit-number">Unit number</Label>
-				<Input id="unit-number" name="unit-number" type="text" placeholder="Unit number" />
+					<FormField
+						control={form.control}
+						name="unit_number"
+						render={({ field }) => (
+							<FormItem>
+								<FormLabel>Unit number</FormLabel>
+								<FormControl>
+									<Input placeholder="Unit number" {...field} />
+								</FormControl>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
 
-				<Label htmlFor="unit-description">Description</Label>
-				<Input id="unit-description" name="unit-description" type="text" placeholder="Description" />
+					<FormField
+						control={form.control}
+						name="unit_description"
+						render={({ field }) => (
+							<FormItem>
+								<FormLabel>Description</FormLabel>
+								<FormControl>
+									<Input placeholder="Description" {...field} />
+								</FormControl>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
 
-				<Label htmlFor="cost">Cost per month</Label>
-				<Input id="cost" name="cost" type="number" />
+					<FormField
+						control={form.control}
+						name="cost_per_month"
+						render={({ field }) => (
+							<FormItem>
+								<FormLabel htmlFor="cost_per_month">Cost per month</FormLabel>
+								<FormControl>
+									<Input
+										type="number"
+										{...field}
+										onChange={(e) => field.onChange(Number(e.target.value))}
+									/>
+								</FormControl>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
 
-				<Label htmlFor="num-bedrooms">Number of bedrooms</Label>
-				<Input id="num-bedrooms" name="num-bedrooms" type="number" min={1} max={4} defaultValue={1} />
+					<FormField
+						control={form.control}
+						name="number_of_bedrooms"
+						render={({ field }) => (
+							<FormItem>
+								<FormLabel htmlFor="number_of_bedrooms">Number of bedrooms</FormLabel>
+								<FormControl>
+									<Input
+										type="number"
+										min={1}
+										max={4}
+										{...field}
+										onChange={(e) => field.onChange(Number(e.target.value))}
+									/>
+								</FormControl>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
 
-				<Label htmlFor="num-bathrooms">Number of bathrooms</Label>
-				<Input id="num-bathrooms" name="num-bathrooms" type="number" min={1} max={4} defaultValue={1} />
+					<FormField
+						control={form.control}
+						name="number_of_bathrooms"
+						render={({ field }) => (
+							<FormItem>
+								<FormLabel htmlFor="number_of_bedrooms">Number of bathrooms</FormLabel>
+								<FormControl>
+									<Input
+										type="number"
+										min={1}
+										max={4}
+										{...field}
+										onChange={(e) => field.onChange(Number(e.target.value))}
+									/>
+								</FormControl>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
 
-				<Label htmlFor="square-footage">Square footage</Label>
-				<Input id="square-footage" name="square-footage" type="number" />
+					<FormField
+						control={form.control}
+						name="square_footage"
+						render={({ field }) => (
+							<FormItem>
+								<FormLabel htmlFor="square_footage">Square footage</FormLabel>
+								<FormControl>
+									<Input
+										type="number"
+										value={field.value ?? ""}
+										onChange={(e) => {
+											const value = e.target.value;
+											field.onChange(value === "" ? null : Number(value));
+										}}
+										onBlur={field.onBlur}
+										name={field.name}
+									/>
+								</FormControl>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
 
-				<Label htmlFor="lease-term">Lease term</Label>
-				<Input id="lease-term" name="lease-term" type="number" min={6} max={12} defaultValue={6} />
+					<FormField
+						control={form.control}
+						name="lease_term"
+						render={({ field }) => (
+							<FormItem>
+								<FormLabel>Lease term</FormLabel>
+								<FormControl>
+									<Input
+										type="number"
+										min={6}
+										max={12}
+										{...field}
+										onChange={(e) => field.onChange(Number(e.target.value))}
+									/>
+								</FormControl>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
 
-				<Label htmlFor="deposit">Deposit</Label>
-				<Input id="deposit" name="deposti" type="number" />
+					<FormField
+						control={form.control}
+						name="security_deposit"
+						render={({ field }) => (
+							<FormItem>
+								<FormLabel htmlFor="security_deposit">Deposit</FormLabel>
+								<FormControl>
+									<Input
+										type="number"
+										value={field.value ?? ""}
+										onChange={(e) => {
+											const value = e.target.value;
+											field.onChange(value === "" ? null : Number(value));
+										}}
+										onBlur={field.onBlur}
+										name={field.name}
+									/>
+								</FormControl>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
 
-				<Label htmlFor="is-available">Is the unit available?</Label>
-				<Input id="is-available" name="is-available" type="checkbox" />
+					<FormField
+						control={form.control}
+						name="is_available"
+						render={({ field }) => (
+							<FormItem className="flex flex_row items_start space_x_3 space_y_0">
+								<FormControl>
+									<Checkbox checked={field.value} onCheckedChange={field.onChange} />
+								</FormControl>
+								<FormLabel>Is the unit available?</FormLabel>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
 
-				<Label htmlFor="available-from">Available from</Label>
-				<Input id="available-from" name="available-from" type="date" />
+					<FormField
+						control={form.control}
+						name="available_from"
+						render={({ field }) => (
+							<FormItem>
+								<FormLabel>Available from</FormLabel>
+								<FormControl>
+									<Input
+										type="date"
+										value={field.value ?? ""} // Convert null/undefined to empty string
+										onChange={(e) => {
+											const value = e.target.value;
+											field.onChange(value === "" ? null : value);
+										}}
+										onBlur={field.onBlur}
+										name={field.name}
+									/>
+								</FormControl>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
 
-				<Label htmlFor="is-parking">Is parking available?</Label>
-				<Input id="is-parking" name="is-parking" type="checkbox" />
+					<FormField
+						control={form.control}
+						name="has_parking"
+						render={({ field }) => (
+							<FormItem className="flex flex_row items_start space_x_3 space_y_0">
+								<FormControl>
+									<Checkbox checked={field.value} onCheckedChange={field.onChange} />
+								</FormControl>
+								<FormLabel>Is parking available?</FormLabel>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
 
-				<Label htmlFor="is-pet-friendly">Is it pet friendly?</Label>
-				<Input id="is-pet-friendly" name="is-pet-friendly" type="checkbox" />
+					<FormField
+						control={form.control}
+						name="pet_friendly"
+						render={({ field }) => (
+							<FormItem className="flex flex_row items_start space_x_3 space_y_0">
+								<FormControl>
+									<Checkbox checked={field.value} onCheckedChange={field.onChange} />
+								</FormControl>
+								<FormLabel>Is it pet friendly?</FormLabel>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
 
-				<Label htmlFor="is-furnished">Is it furnished?</Label>
-				<Input id="is-furnished" name="is-furnished" type="checkbox" />
-
-				<Label htmlFor="unit-type">Unit type</Label>
-				<select id="unit-type" name="unit-type">
-					<option value="apartment">Apartment</option>
-					<option value="house">House</option>
-					<option value="townhouse">Townhouse</option>
-				</select>
-
-				<Button type="submit">Create entered unit</Button>
-			</form>
+					<FormField
+						control={form.control}
+						name="furnished"
+						render={({ field }) => (
+							<FormItem className="flex flex-row items-start space-x-3 space-y-0">
+								<FormControl>
+									<Checkbox checked={field.value} onCheckedChange={field.onChange} />
+								</FormControl>
+								<FormLabel>Is it furnished?</FormLabel>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
+					<FormField
+						control={form.control}
+						name="unit_type"
+						render={() => (
+							<FormItem>
+								<FormLabel>Unit type</FormLabel>
+								<FormControl>
+									<ComboBox />
+								</FormControl>
+							</FormItem>
+						)}
+					/>
+					<Button type="submit">Create entered unit</Button>
+				</form>
+			</Form>
 		</>
 	);
 }
