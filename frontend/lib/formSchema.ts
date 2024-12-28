@@ -57,3 +57,22 @@ export const unitSchema = z.object({
 
 // Type inference
 export type UnitFormData = z.infer<typeof unitSchema>;
+
+export const defaultFormData = {
+	unit_type: "apartment",
+	search_input: "",
+	unit_number: "",
+	apartment_name: "",
+	unit_description: "",
+	cost_per_month: 0,
+	number_of_bedrooms: 1,
+	number_of_bathrooms: 1,
+	square_footage: 0,
+	lease_term: 12,
+	security_deposit: 0,
+	is_available: true,
+	available_from: "",
+	has_parking: false,
+	pet_friendly: false,
+	furnished: false,
+};

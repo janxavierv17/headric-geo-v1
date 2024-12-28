@@ -1,12 +1,12 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { defaultUnitFormData, UnitFormData } from "../../lib/formSchema";
+import { defaultFormData, UnitFormData } from "../../lib/formSchema";
 
 type InitialState = {
 	form: UnitFormData;
 };
 
 const initialState: InitialState = {
-	form: defaultUnitFormData,
+	form: defaultFormData,
 };
 
 export const unitSlice = createSlice({

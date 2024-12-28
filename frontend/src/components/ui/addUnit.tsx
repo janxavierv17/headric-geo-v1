@@ -9,31 +9,14 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { ComboBox } from "@/components/ui/combobox";
 import { Checkbox } from "@/components/ui/checkbox";
 import { addUnit } from "../../../lib/actions";
-import { UnitFormData, unitSchema } from "../../../lib/formSchema";
+import { defaultFormData, UnitFormData, unitSchema } from "../../../lib/formSchema";
 import { useAppSelector } from "../../../lib/hooks";
 import { UnitType } from "./unitType";
 
 export const AddUnit = () => {
 	const form = useForm<UnitFormData>({
 		resolver: zodResolver(unitSchema),
-		defaultValues: {
-			unit_type: "apartment",
-			search_input: "",
-			unit_number: "",
-			apartment_name: "",
-			unit_description: "",
-			cost_per_month: 0,
-			number_of_bedrooms: 1,
-			number_of_bathrooms: 1,
-			square_footage: 0,
-			lease_term: 12,
-			security_deposit: 0,
-			is_available: true,
-			available_from: "",
-			has_parking: false,
-			pet_friendly: false,
-			furnished: false,
-		},
+		defaultValues: defaultFormData,
 	});
 	const currentProximity: [number, number] = [133.4170119, -26.1772288];
 	const feature = useAppSelector((state) => state.address.feature) as GeoJSON.Feature<GeoJSON.Point>;
