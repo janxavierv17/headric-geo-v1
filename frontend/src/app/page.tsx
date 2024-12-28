@@ -1,24 +1,28 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import mapboxgl, { Map as MapboxMap, Marker } from "mapbox-gl";
 import { useAddressesQuery } from "../../features/api/apiSlice";
-import { SearchInput } from "@/components/ui/searchInput";
 import { useAppDispatch, useAppSelector } from "../../lib/hooks";
 import { currentProximity } from "../../features/address/addressSlice";
 import { v4 as uuIdv4 } from "uuid";
 import { useRouter } from "next/navigation";
 import { links } from "@/components/ui/navBar";
+import { UnitList } from "@/components/ui/unitList";
 
 export default function Home() {
 	mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN || "";
-	const [proximity, setProximity] = useState<[number, number] | null>(null);
 	const mapContainerRef = useRef<HTMLDivElement | null>(null);
 	const mapRef = useRef<MapboxMap | null>(null);
-	const { data } = useAddressesQuery();
+	const { data, isLoading } = useAddressesQuery();
 	const dispatch = useAppDispatch();
 	const markersRef = useRef<Map<string, Marker>>(new Map());
-	const coord = useAppSelector((state) => state.address.feature?.geometry.coordinates);
+	const coordinates = useAppSelector((state) => {
+		if (state.address.feature?.geometry.type === "Point") {
+			return state.address.feature?.geometry?.coordinates;
+		}
+	});
+	const coord = coordinates as [number, number];
 	const router = useRouter();
 
 	useEffect(() => {
@@ -77,7 +81,7 @@ export default function Home() {
 				});
 			});
 		}
-	}, [coord]);
+	}, [coord, router]);
 
 	// Initialize map
 	useEffect(() => {
@@ -97,7 +101,6 @@ export default function Home() {
 						(visibleBounds.getNorth() + visibleBounds.getSouth()) / 2,
 					];
 
-					setProximity(latLng);
 					dispatch(currentProximity(latLng));
 				}
 			};
@@ -111,7 +114,7 @@ export default function Home() {
 				mapRef.current = null;
 			}
 		};
-	}, []);
+	}, [dispatch]);
 
 	// Handle data loading and map interactions
 	useEffect(() => {
@@ -166,9 +169,10 @@ export default function Home() {
 	}, [data]);
 
 	return (
-		<div ref={mapContainerRef} className="map-container relative h-screen w-screen z-0">
-			<div className="absolute z-10 top-3 left-3 w-1/5">
-				<SearchInput proximity={proximity} />
+		<div className="flex flex-row-reverse">
+			<div ref={mapContainerRef} className="map-container relative h-[90vh] w-screen z-0" />
+			<div className="h-[90vh] grid grid-cols-2 pl-8 pr-3 gap-1 overflow-scroll">
+				<UnitList units={data} isLoading={isLoading} />
 			</div>
 		</div>
 	);
