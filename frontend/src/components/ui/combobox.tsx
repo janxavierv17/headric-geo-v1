@@ -23,7 +23,7 @@ export const ComboBox = () => {
 	];
 
 	return (
-		<Popover open={isOpen} onOpenChange={setIsOpen} id="unit-type">
+		<Popover open={isOpen} onOpenChange={setIsOpen}>
 			<PopoverTrigger asChild>
 				<Button variant="outline" role="combobox" className="w-[200px]">
 					{selectedChoice
