@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { Button } from "./button";
-import { HomeIcon, UserIcon } from "@heroicons/react/24/outline";
+import { House, User } from "lucide-react";
 import { usePathname } from "next/navigation";
 
 export const links = { home: "/", apartment: "/apartment", login: "/login" } as const;
@@ -26,7 +26,7 @@ export const NavBar = () => {
 							} focus:outline-none focus:ring focus:ring-emerald-300`}
 						>
 							<Link href="/apartment" className="flex items-center gap-2">
-								<HomeIcon />
+								<House />
 								Add a unit
 							</Link>
 						</Button>
@@ -38,7 +38,7 @@ export const NavBar = () => {
 							} focus:outline-none focus:ring focus:ring-emerald-300`}
 						>
 							<Link href="/login" className="flex items-center gap-2">
-								<UserIcon />
+								<User />
 								Log in
 							</Link>
 						</Button>
