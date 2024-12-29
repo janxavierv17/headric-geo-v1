@@ -114,9 +114,7 @@ export default function Apartment() {
 					<FormField
 						control={form.control}
 						name="unit_number"
-						render={(props) => {
-							const { field, formState: errors } = props;
-							console.log("props =>", props, props.formState.errors);
+						render={({ field, formState: { errors } }) => {
 							const error =
 								errors.unit_number !== undefined ? (
 									<p className="text-xs text-red-600">{errors.unit_number.message}</p>
@@ -153,7 +151,7 @@ export default function Apartment() {
 					<FormField
 						control={form.control}
 						name="cost_per_month"
-						render={({ field, formState: errors }) => {
+						render={({ field, formState: { errors } }) => {
 							const error =
 								errors.cost_per_month !== undefined ? (
 									<p className="text-xs text-red-600">{errors.cost_per_month.message}</p>
@@ -178,7 +176,7 @@ export default function Apartment() {
 					<FormField
 						control={form.control}
 						name="number_of_bedrooms"
-						render={({ field, formState: errors }) => {
+						render={({ field, formState: { errors } }) => {
 							const error =
 								errors.number_of_bedrooms !== undefined ? (
 									<p className="text-xs text-red-600">{errors.number_of_bedrooms.message}</p>
@@ -205,7 +203,7 @@ export default function Apartment() {
 					<FormField
 						control={form.control}
 						name="number_of_bathrooms"
-						render={({ field, formState: errors }) => {
+						render={({ field, formState: { errors } }) => {
 							const error =
 								errors.number_of_bathrooms !== undefined ? (
 									<p className="text-xs text-red-600">{errors.number_of_bathrooms.message}</p>
@@ -232,7 +230,7 @@ export default function Apartment() {
 					<FormField
 						control={form.control}
 						name="square_footage"
-						render={({ field, formState: errors }) => {
+						render={({ field, formState: { errors } }) => {
 							const error =
 								errors.square_footage !== undefined ? (
 									<p className="text-xs text-red-600">{errors.square_footage.message}</p>
@@ -262,7 +260,7 @@ export default function Apartment() {
 					<FormField
 						control={form.control}
 						name="lease_term"
-						render={({ field, formState: errors }) => {
+						render={({ field, formState: { errors } }) => {
 							const error =
 								errors.lease_term !== undefined ? (
 									<p className="text-xs text-red-600">{errors.lease_term.message}</p>
@@ -289,7 +287,7 @@ export default function Apartment() {
 					<FormField
 						control={form.control}
 						name="security_deposit"
-						render={({ field, formState: errors }) => {
+						render={({ field, formState: { errors } }) => {
 							const error =
 								errors.security_deposit !== undefined ? (
 									<p className="text-xs text-red-600">{errors.security_deposit.message}</p>
@@ -319,7 +317,7 @@ export default function Apartment() {
 					<FormField
 						control={form.control}
 						name="available_from"
-						render={({ field, formState: errors }) => {
+						render={({ field, formState: { errors } }) => {
 							const error =
 								errors.available_from !== undefined ? (
 									<p className="text-xs text-red-600">{errors.available_from.message}</p>
@@ -348,7 +346,7 @@ export default function Apartment() {
 					<FormField
 						control={form.control}
 						name="is_available"
-						render={({ field, formState: errors }) => {
+						render={({ field, formState: { errors } }) => {
 							const error =
 								errors.is_available !== undefined ? (
 									<p className="text-xs text-red-600">{errors.is_available.message}</p>
@@ -368,7 +366,7 @@ export default function Apartment() {
 					<FormField
 						control={form.control}
 						name="has_parking"
-						render={({ field, formState: errors }) => {
+						render={({ field, formState: { errors } }) => {
 							const error =
 								errors.has_parking !== undefined ? (
 									<p className="text-xs text-red-600">{errors.has_parking.message}</p>
@@ -389,7 +387,7 @@ export default function Apartment() {
 					<FormField
 						control={form.control}
 						name="pet_friendly"
-						render={({ field, formState: errors }) => {
+						render={({ field, formState: { errors } }) => {
 							const error =
 								errors.pet_friendly !== undefined ? (
 									<p className="text-xs text-red-600">{errors.pet_friendly.message}</p>
@@ -410,7 +408,7 @@ export default function Apartment() {
 					<FormField
 						control={form.control}
 						name="furnished"
-						render={({ field, formState: errors }) => {
+						render={({ field, formState: { errors } }) => {
 							const error =
 								errors.furnished !== undefined ? (
 									<p className="text-xs text-red-600">{errors.furnished.message}</p>
@@ -431,7 +429,7 @@ export default function Apartment() {
 					<FormField
 						control={form.control}
 						name="unit_type"
-						render={({ field, formState: errors }) => {
+						render={({ field, formState: { errors } }) => {
 							const error =
 								errors.unit_type !== undefined ? (
 									<p className="text-xs text-red-600">{errors.unit_type.message}</p>
