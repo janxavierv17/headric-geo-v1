@@ -20,26 +20,14 @@ export const unitSchema = z.object({
 
 	number_of_bathrooms: z.number().int("Must be a whole number").min(1, "Must have at least 1 bathroom").default(1),
 
-	square_footage: z
-		.number()
-		.positive("Square footage must be greater than 0")
-		.multipleOf(0.01, "Square footage must have at most 2 decimal places")
-		.max(9999999.99, "Square footage cannot exceed 10 digits including decimals")
-		.nullable()
-		.optional(),
+	square_footage: z.number().positive("Square footage must be greater than 0"),
 
 	has_parking: z.boolean().default(false),
 	pet_friendly: z.boolean().default(false),
 
 	lease_term: z.number().int("Must be a whole number").min(1, "Lease term must be at least 1 month").default(12),
 
-	security_deposit: z
-		.number()
-		.positive("Security deposit must be greater than 0")
-		.multipleOf(0.01, "Security deposit must have at most 2 decimal places")
-		.max(9999999.99, "Security deposit cannot exceed 10 digits including decimals")
-		.nullable()
-		.optional(),
+	security_deposit: z.number().positive("Security deposit must be greater than 0"),
 
 	utilities_included: z.boolean().default(false),
 	furnished: z.boolean().default(false),
@@ -67,11 +55,11 @@ export const defaultFormData: UnitFormData = {
 	cost_per_month: 0,
 	number_of_bedrooms: 1,
 	number_of_bathrooms: 1,
-	square_footage: null,
+	square_footage: 0,
 	has_parking: false,
 	pet_friendly: false,
 	lease_term: 12,
-	security_deposit: null,
+	security_deposit: 0,
 	utilities_included: false,
 	furnished: false,
 	available_from: "",

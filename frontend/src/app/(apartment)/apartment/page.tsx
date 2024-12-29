@@ -64,23 +64,13 @@ export default function Apartment() {
 					<FormField
 						control={form.control}
 						name="search_input"
-						render={(props) => {
-							const {
-								field,
-								formState: { errors },
-							} = props;
-
-							const error =
-								errors.search_input !== undefined ? (
-									<p className="text-xs text-red-600">{errors.search_input.message}</p>
-								) : null;
-
+						render={({ field }) => {
 							return (
 								<FormItem>
 									<FormLabel htmlFor="search_input" className="text-sm">
 										Search an address
 									</FormLabel>
-									{error}
+									<FormMessage />
 									<FormControl>
 										<SearchInput proximity={currentProximity} onChange={field.onChange} />
 									</FormControl>
@@ -92,20 +82,14 @@ export default function Apartment() {
 					<FormField
 						control={form.control}
 						name="apartment_name"
-						render={({ field, formState: { errors } }) => {
-							const error =
-								errors.apartment_name !== undefined ? (
-									<p className="text-xs text-red-600">{errors.apartment_name.message}</p>
-								) : null;
-
+						render={({ field }) => {
 							return (
 								<FormItem>
 									<FormLabel htmlFor="apartment_name">Does the apartment have a name?</FormLabel>
-									{error}
+									<FormMessage />
 									<FormControl>
 										<Input placeholder="Name of the apartment" {...field} />
 									</FormControl>
-									<FormMessage />
 								</FormItem>
 							);
 						}}
@@ -114,19 +98,14 @@ export default function Apartment() {
 					<FormField
 						control={form.control}
 						name="unit_number"
-						render={({ field, formState: { errors } }) => {
-							const error =
-								errors.unit_number !== undefined ? (
-									<p className="text-xs text-red-600">{errors.unit_number.message}</p>
-								) : null;
+						render={({ field }) => {
 							return (
 								<FormItem>
 									<FormLabel htmlFor="unit_number">Unit number</FormLabel>
-									{error}
+									<FormMessage />
 									<FormControl>
 										<Input id="unit_number" placeholder="Unit number" {...field} />
 									</FormControl>
-									<FormMessage />
 								</FormItem>
 							);
 						}}
@@ -151,15 +130,11 @@ export default function Apartment() {
 					<FormField
 						control={form.control}
 						name="cost_per_month"
-						render={({ field, formState: { errors } }) => {
-							const error =
-								errors.cost_per_month !== undefined ? (
-									<p className="text-xs text-red-600">{errors.cost_per_month.message}</p>
-								) : null;
+						render={({ field }) => {
 							return (
 								<FormItem>
 									<FormLabel htmlFor="cost_per_month">Cost per month</FormLabel>
-									{error}
+									<FormMessage />
 									<FormControl>
 										<Input
 											type="number"
@@ -167,7 +142,6 @@ export default function Apartment() {
 											onChange={(e) => field.onChange(Number(e.target.value))}
 										/>
 									</FormControl>
-									<FormMessage />
 								</FormItem>
 							);
 						}}
@@ -176,15 +150,11 @@ export default function Apartment() {
 					<FormField
 						control={form.control}
 						name="number_of_bedrooms"
-						render={({ field, formState: { errors } }) => {
-							const error =
-								errors.number_of_bedrooms !== undefined ? (
-									<p className="text-xs text-red-600">{errors.number_of_bedrooms.message}</p>
-								) : null;
+						render={({ field }) => {
 							return (
 								<FormItem>
 									<FormLabel htmlFor="number_of_bedrooms">Number of bedrooms</FormLabel>
-									{error}
+									<FormMessage />
 									<FormControl>
 										<Input
 											type="number"
@@ -194,7 +164,6 @@ export default function Apartment() {
 											onChange={(e) => field.onChange(Number(e.target.value))}
 										/>
 									</FormControl>
-									<FormMessage />
 								</FormItem>
 							);
 						}}
@@ -203,15 +172,11 @@ export default function Apartment() {
 					<FormField
 						control={form.control}
 						name="number_of_bathrooms"
-						render={({ field, formState: { errors } }) => {
-							const error =
-								errors.number_of_bathrooms !== undefined ? (
-									<p className="text-xs text-red-600">{errors.number_of_bathrooms.message}</p>
-								) : null;
+						render={({ field }) => {
 							return (
 								<FormItem>
 									<FormLabel htmlFor="number_of_bedrooms">Number of bathrooms</FormLabel>
-									{error}
+									<FormMessage />
 									<FormControl>
 										<Input
 											type="number"
@@ -221,7 +186,6 @@ export default function Apartment() {
 											onChange={(e) => field.onChange(Number(e.target.value))}
 										/>
 									</FormControl>
-									<FormMessage />
 								</FormItem>
 							);
 						}}
@@ -230,15 +194,11 @@ export default function Apartment() {
 					<FormField
 						control={form.control}
 						name="square_footage"
-						render={({ field, formState: { errors } }) => {
-							const error =
-								errors.square_footage !== undefined ? (
-									<p className="text-xs text-red-600">{errors.square_footage.message}</p>
-								) : null;
+						render={({ field }) => {
 							return (
 								<FormItem>
 									<FormLabel htmlFor="square_footage">Square footage</FormLabel>
-									{error}
+									<FormMessage />
 									<FormControl>
 										<Input
 											type="number"
@@ -251,7 +211,6 @@ export default function Apartment() {
 											name={field.name}
 										/>
 									</FormControl>
-									<FormMessage />
 								</FormItem>
 							);
 						}}
@@ -260,15 +219,11 @@ export default function Apartment() {
 					<FormField
 						control={form.control}
 						name="lease_term"
-						render={({ field, formState: { errors } }) => {
-							const error =
-								errors.lease_term !== undefined ? (
-									<p className="text-xs text-red-600">{errors.lease_term.message}</p>
-								) : null;
+						render={({ field }) => {
 							return (
 								<FormItem>
 									<FormLabel>Lease term</FormLabel>
-									{error}
+									<FormMessage />
 									<FormControl>
 										<Input
 											type="number"
@@ -278,7 +233,6 @@ export default function Apartment() {
 											onChange={(e) => field.onChange(Number(e.target.value))}
 										/>
 									</FormControl>
-									<FormMessage />
 								</FormItem>
 							);
 						}}
@@ -287,15 +241,11 @@ export default function Apartment() {
 					<FormField
 						control={form.control}
 						name="security_deposit"
-						render={({ field, formState: { errors } }) => {
-							const error =
-								errors.security_deposit !== undefined ? (
-									<p className="text-xs text-red-600">{errors.security_deposit.message}</p>
-								) : null;
+						render={({ field }) => {
 							return (
 								<FormItem>
 									<FormLabel htmlFor="security_deposit">Deposit</FormLabel>
-									{error}
+									<FormMessage />
 									<FormControl>
 										<Input
 											type="number"
@@ -308,7 +258,6 @@ export default function Apartment() {
 											name={field.name}
 										/>
 									</FormControl>
-									<FormMessage />
 								</FormItem>
 							);
 						}}
@@ -317,15 +266,11 @@ export default function Apartment() {
 					<FormField
 						control={form.control}
 						name="available_from"
-						render={({ field, formState: { errors } }) => {
-							const error =
-								errors.available_from !== undefined ? (
-									<p className="text-xs text-red-600">{errors.available_from.message}</p>
-								) : null;
+						render={({ field }) => {
 							return (
 								<FormItem>
 									<FormLabel>Available from</FormLabel>
-									{error}
+									<FormMessage />
 									<FormControl>
 										<Input
 											type="date"
@@ -338,7 +283,6 @@ export default function Apartment() {
 											name={field.name}
 										/>
 									</FormControl>
-									<FormMessage />
 								</FormItem>
 							);
 						}}
@@ -346,19 +290,14 @@ export default function Apartment() {
 					<FormField
 						control={form.control}
 						name="is_available"
-						render={({ field, formState: { errors } }) => {
-							const error =
-								errors.is_available !== undefined ? (
-									<p className="text-xs text-red-600">{errors.is_available.message}</p>
-								) : null;
+						render={({ field }) => {
 							return (
 								<FormItem className="flex flex_row items_start space_x_3 space_y_0">
 									<FormControl>
 										<Checkbox checked={field.value} onCheckedChange={field.onChange} />
 									</FormControl>
 									<FormLabel>Is the unit available?</FormLabel>
-									{error}
-									<FormMessage />
+									<FormMessage /> <FormMessage />
 								</FormItem>
 							);
 						}}
@@ -366,18 +305,13 @@ export default function Apartment() {
 					<FormField
 						control={form.control}
 						name="has_parking"
-						render={({ field, formState: { errors } }) => {
-							const error =
-								errors.has_parking !== undefined ? (
-									<p className="text-xs text-red-600">{errors.has_parking.message}</p>
-								) : null;
+						render={({ field }) => {
 							return (
 								<FormItem className="flex flex_row items_start space_x_3 space_y_0">
 									<FormControl>
 										<Checkbox checked={field.value} onCheckedChange={field.onChange} />
 									</FormControl>
 									<FormLabel>Is parking available?</FormLabel>
-									{error}
 									<FormMessage />
 								</FormItem>
 							);
@@ -387,19 +321,14 @@ export default function Apartment() {
 					<FormField
 						control={form.control}
 						name="pet_friendly"
-						render={({ field, formState: { errors } }) => {
-							const error =
-								errors.pet_friendly !== undefined ? (
-									<p className="text-xs text-red-600">{errors.pet_friendly.message}</p>
-								) : null;
+						render={({ field }) => {
 							return (
 								<FormItem className="flex flex_row items_start space_x_3 space_y_0">
 									<FormControl>
 										<Checkbox checked={field.value} onCheckedChange={field.onChange} />
 									</FormControl>
 									<FormLabel>Is it pet friendly?</FormLabel>
-									{error}
-									<FormMessage />
+									<FormMessage /> <FormMessage />
 								</FormItem>
 							);
 						}}
@@ -408,18 +337,13 @@ export default function Apartment() {
 					<FormField
 						control={form.control}
 						name="furnished"
-						render={({ field, formState: { errors } }) => {
-							const error =
-								errors.furnished !== undefined ? (
-									<p className="text-xs text-red-600">{errors.furnished.message}</p>
-								) : null;
+						render={({ field }) => {
 							return (
 								<FormItem className="flex flex-row items-start space-x-3 space-y-0">
 									<FormControl>
 										<Checkbox checked={field.value} onCheckedChange={field.onChange} />
 									</FormControl>
 									<FormLabel>Is it furnished?</FormLabel>
-									{error}
 									<FormMessage />
 								</FormItem>
 							);
@@ -429,15 +353,11 @@ export default function Apartment() {
 					<FormField
 						control={form.control}
 						name="unit_type"
-						render={({ field, formState: { errors } }) => {
-							const error =
-								errors.unit_type !== undefined ? (
-									<p className="text-xs text-red-600">{errors.unit_type.message}</p>
-								) : null;
+						render={({ field }) => {
 							return (
 								<FormItem>
 									<FormLabel htmlFor="unit_type">What kind of unit do you have?</FormLabel>
-									{error}
+									<FormMessage />
 									<FormControl>
 										<select id="unit_type" {...field}>
 											<option value="apartment">Apartment</option>

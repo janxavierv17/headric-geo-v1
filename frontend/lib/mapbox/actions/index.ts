@@ -24,7 +24,6 @@ export async function searchAndSuggestions(search_text: string, proximity: [numb
 	const response = await fetch(mapBoxSearchURI);
 	const data = await response.json();
 
-	console.log(`Data from /suggest ${search_text}`, JSON.stringify(data, null, 2));
 	return data;
 }
 
@@ -34,6 +33,5 @@ export async function retrieveGeoCode(mapbox_id: Mapbox_id) {
 	const response = await fetch(mapBoxRetrieveURI);
 	const data = await response.json();
 
-	console.log(`Data from /retireve ${mapBoxRetrieveURI}`, JSON.stringify(data, null, 2));
 	return data;
 }

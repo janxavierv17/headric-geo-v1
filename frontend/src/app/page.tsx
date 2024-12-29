@@ -14,7 +14,7 @@ export default function Home() {
 	mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN || "";
 	const mapContainerRef = useRef<HTMLDivElement | null>(null);
 	const mapRef = useRef<MapboxMap | null>(null);
-	const { data, isLoading } = useAddressesQuery();
+	const { data } = useAddressesQuery();
 	const dispatch = useAppDispatch();
 	const markersRef = useRef<Map<string, Marker>>(new Map());
 	const coordinates = useAppSelector((state) => {
@@ -172,7 +172,7 @@ export default function Home() {
 		<div className="flex flex-row-reverse">
 			<div ref={mapContainerRef} className="map-container relative h-[90vh] w-screen z-0" />
 			<div className="h-[90vh] grid grid-cols-2 pl-8 pr-3 gap-1 overflow-scroll">
-				<UnitList units={data} isLoading={isLoading} />
+				<UnitList />
 			</div>
 		</div>
 	);
