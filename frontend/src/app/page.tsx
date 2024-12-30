@@ -171,7 +171,7 @@ export default function Home() {
 	return (
 		<div className="flex flex-row-reverse">
 			<div ref={mapContainerRef} className="map-container relative h-[90vh] w-screen z-0" />
-			<div className="h-[90vh] grid grid-cols-2 pl-8 pr-3 gap-1 overflow-scroll">
+			<div className="h-[90vh] grid grid-cols-1 sm:grid-cols-2 pl-8 pr-3 gap-1 overflow-scroll">
 				<UnitList />
 			</div>
 		</div>

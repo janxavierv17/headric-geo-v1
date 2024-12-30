@@ -7,7 +7,10 @@ export const apiSlice = createApi({
 		addresses: builder.query<GeoJSON.FeatureCollection, void>({
 			query: () => "/address/",
 		}),
+		unitList: builder.query<GeoJSON.FeatureCollection, void>({
+			query: () => "/unit/",
+		}),
 	}),
 });
 
-export const { useAddressesQuery } = apiSlice;
+export const { useAddressesQuery, useUnitListQuery } = apiSlice;
