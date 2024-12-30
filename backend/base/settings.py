@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 import environ
 from pathlib import Path
+from datetime import timedelta
 
 env = environ.Env(DEBUG=(bool, False))
 environ.Env.read_env(env_file=".env")
@@ -43,7 +44,12 @@ DJANGO_APPS = [
     "django.contrib.gis",
 ]
 
-THIRD_PARTY_APPS = ["rest_framework", "rest_framework_gis", "corsheaders"]
+THIRD_PARTY_APPS = [
+    "rest_framework",
+    "rest_framework_simplejwt",
+    "rest_framework_gis",
+    "corsheaders",
+]
 
 PROJECT_APPS = [
     "core.apps.CoreConfig",
@@ -149,3 +155,20 @@ CORS_ALLOW_METHODS = [
     "DELETE",
     "OPTIONS",
 ]
+
+REST_FRAMEWORK = {
+    "DEFAULT_PERMISSION_CLASSES": (
+        "rest_framework.permissions.IsAuthenticated",
+    ),
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
+    ),
+}
+
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=60),
+    "SLIDING_TOKEN_REFRESH_LIFETIME": timedelta(days=1),
+    "SLIDING_TOKEN_LIFETIME": timedelta(days=30),
+    "SLIDING_TOKEN_REFRESH_LIFETIME_LATE_USER": timedelta(days=1),
+    "SLIDING_TOKEN_LIFETIME_LATE_USER": timedelta(days=30),
+}
