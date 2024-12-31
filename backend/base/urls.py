@@ -26,6 +26,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("", include("address.urls")),
     path("", include("unit.urls")),
+    path("", include("user.urls")),
     path(
         "api/v1/token/",
         TokenObtainPairView.as_view(),
